@@ -20,16 +20,16 @@ precio(lomito,2500).
 precio(caramelos,0).
 
 %atracciones
-tranquila(autitos,familiar).
-tranquila(tobogan,chicos).
-tranquila(calesita,chicos).
+atracciones(autitos, tranquila(familiar)).
+atracciones(tobogan, tranquila(chicos)).
+atracciones(calesita, tranquila(chicos)).
 
-intensa(barcoPirata,14).
-intensa(tazasChinas,6).
-intensa(simulador3D,2).
+atracciones(barcoPirata, intensa(14)).
+atracciones(tazasChinas, intensa(6)).
+atracciones(simulador3D, intensa(2)).
 
-montania(abismo,3,tiempo(2,14)).
-montania(paseoBosque,0,tiempo(0,45)).
+atracciones(abismo, montania(3,tiempo(2,14))).
+atracciones(paseoBosque, montania(0, tiempo(0,45))).
 
 %2
 sumaEstado(Visitante, Total):-
@@ -78,31 +78,35 @@ satisface(Persona,caramelos):- %No puede comprar ninguna otra comida
     not((puedePagar(Persona,Comida), Comida \= caramelos)). 
     
 %4
-lluviaHamburguesas(Visitante,Atraccion):-
+lluviaHamburguesas(Visitante, Atraccion):-
     puedePagar(Visitante,hamburguesa),
-    atraccionFuerte(Visitante,Atraccion).
+    atraccionFuerte(Visitante, Atraccion).
 
-atraccionFuerte(Visitante, intensa(_,Coeficiente)):-
+atraccionFuerte(Visitante, Atraccion):-
+    atracciones(Atraccion, intensa(Coeficiente)),
     Coeficiente > 10.
 
-atraccionFuerte(Visitante, tranquila(tobogan,_)).
+atraccionFuerte(Visitante, tobogan).
 
-atraccionFuerte(Visitante, montania(Montania,_,_)):-
-    esPeligrosa(Visitante, Montania).
+atraccionFuerte(Visitante, Atraccion):-
+    atracciones(Atraccion, montania(_,_)),
+    esPeligrosa(Visitante, Atraccion).
     
 esPeligrosa(Visitante, MontaniaRusa):-
     visitante(Visitante,_,_,_,_),
     not(esChico(Visitante)),
-    not(estadoVisitante(Visitante,necesitaEntretenerse)).
+    not(estadoVisitante(Visitante,necesitaEntretenerse)),
     mayorGiros(MontaniaRusa).
 
 esPeligrosa(Visitante,MontaniaRusa):-
     esChico(Visitante),
-    montania(MontaniaRusa,_,tiempo(Min,_)),
+    atracciones(MontaniaRusa, montania(_,tiempo(Min,_))),
     Min >= 1.
 
 mayorGiros(MontaniaMasGiros):-
-    montania(MontaniaMasGiros, MayorGiros, _),
-    forall((montania(Montania,Giros,_), Montania \= MontaniaMasGiros), Giros =< MayorGiros).
+    girosMontania(MontaniaMasGiros,MayorGiros),
+    forall((girosMontania(Montania,Giros), Montania \= MontaniaMasGiros), Giros =< MayorGiros).
 
+girosMontania(Montania,Giros):-
+    atracciones(Montania, montania(Giros,_)).
 %5
