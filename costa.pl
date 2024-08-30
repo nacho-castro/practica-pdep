@@ -56,8 +56,7 @@ estadoVisitante(Visitante,seQuiereIr):-
 satisfacerHambre(Grupo,Comida):-
     grupo(Grupo,_),
     precio(Comida,_),
-    forall(grupo(Grupo,Persona), puedePagar(Persona,Comida)),
-    forall(grupo(Grupo,Persona), satisface(Persona,Comida)).
+    forall(grupo(Grupo,Persona), (puedePagar(Persona,Comida), satisface(Persona,Comida))).
 
 puedePagar(Persona,Comida):-
     precio(Comida,Precio),
@@ -71,7 +70,7 @@ satisface(Persona,hamburguesa):- %Menos de 50 de hambre
 satisface(Persona,panchito):- %A los chicos les gusta
     esChico(Persona).
 
-satisface(Persona,lomito). %A todos les gusta
+satisface(_,lomito). %A todos les gusta
 
 satisface(Persona,caramelos):- %No puede comprar ninguna otra comida
     visitante(Persona,_,_,_,_),
@@ -80,6 +79,7 @@ satisface(Persona,caramelos):- %No puede comprar ninguna otra comida
 %4
 lluviaHamburguesas(Visitante, Atraccion):-
     puedePagar(Visitante,hamburguesa),
+    atracciones(Atraccion,_),
     atraccionFuerte(Visitante, Atraccion).
 
 atraccionFuerte(Visitante, Atraccion):-
