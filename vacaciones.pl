@@ -46,8 +46,9 @@ esCopada(playa(Diferencia)):-
     Diferencia < 5.
 
 esCopada(excursion(Nombre)):-
-    length(Nombre, Letras),
-    Letras > 7.
+    atom_chars(Nombre, Chars), % Convertimos el nombre en una lista de caracteres
+    length(Chars, Cantidad),   % Calculamos la longitud
+    Cantidad > 7.
 
 esCopada(parqueNacional(_)).
     
