@@ -77,8 +77,9 @@ comodin(Palabra,Modelo):-
             Cant =< MayorCant).
     
 cantidadSinonimos(Palabra,Modelo,Cantidad):-
+    palabra(Palabra,Modelo,_),
     findall(Sinonimo, sinonimo(Palabra,Sinonimo,Modelo), Sinonimos),
-    length(Sinonimos, MayorCantidad).
+    length(Sinonimos, Cantidad).
 
 %8
 perfil(pedro, programador(ruby, 5)).
