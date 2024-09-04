@@ -88,21 +88,21 @@ perfil(sofia, estudiante(psicologia)).
 perfil(juan, hijoDePapi).
 
 palabrasRelevantes(Palabra,Modelo,Persona):-
-    perfil(Persona,Tipo),
+    perfil(Persona,Perfil),
     palabra(Palabra,Modelo,_),
-    relevancia(Palabra,Modelo,Perfil).
+    esRelevante(Palabra,Modelo,Perfil).
 
-relevancia(Palabra,Modelo,programador(Lenguaje,Exp)):-
+esRelevante(Palabra,Modelo,programador(Lenguaje,Exp)):-
     Cercania is 50*Exp,
     cercania(Palabra,Lenguaje, Modelo, Cercania).
 
-relevancia(Palabra,Modelo,estudiante(programacion)):-
-    relevancia(Palabra,Modelo,programador(wollok,1)).
+esRelevante(Palabra,Modelo,estudiante(programacion)):-
+    esRelevante(Palabra,Modelo,programador(wollok,1)).
 
-relevancia(Palabra,Modelo,estudiante(Estudios)):-
-    cercania(Palabra,Estudios, Modelo, 200).
+esRelevante(Palabra,Modelo,estudiante(Carrera)):-
+    cercania(Palabra, Carrera, Modelo, 200).
 
-relevancia(Palabra,Modelo,hijoDePapi):-
+esRelevante(Palabra,Modelo,hijoDePapi):-
     sinonimo(Palabra,guita,Modelo).
 
 %9
