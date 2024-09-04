@@ -41,7 +41,7 @@ diferenciaModelo(Palabra1,Palabra2,Modelo,Diferencia):-
     Diferencia is abs(Valor2 - Valor1).
 
 cercania(Palabra1,Palabra2,Modelo,Valor):-
-    diferenciaModelo(Palabra1,Palabra2,Modelo,Valor),
+    diferenciaModelo(Palabra1,Palabra2,Modelo,Diferencia),
     Diferencia < Valor.
 
 %4
