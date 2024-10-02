@@ -1,0 +1,10 @@
+import tomjerry.animal.tom
+
+describe "Tom y Jerry" {
+
+  test "Tom velocidad" {
+    tom.energia(20)
+    assert.equals(7, tom.velocidad())
+  }
+
+}
