@@ -1,7 +1,10 @@
 class Vaca {
     var property peso
-    var property tieneSed
+    var property tieneSed = false
     method tieneHambre() = peso < 200  
+
+    var property vacunas = 0
+    method puedeVacunarse() = vacunas == 0
 
     method comer(kilos){
         peso += kilos/3
@@ -16,8 +19,11 @@ class Vaca {
 
 class Cerdo {
     var property peso
-    var cantComioSinBeber
+    var cantComioSinBeber = 0
     var property tieneHambre = true
+
+    var property vacunas = 0
+    method puedeVacunarse() = true
 
     method tieneSed() = cantComioSinBeber > 3
 
@@ -39,6 +45,9 @@ class Gallina {
     method peso() = 4
 	method tieneHambre() = true
 	method tieneSed() = false
+
+    var property vacunas = 0
+    method puedeVacunarse() = false
 	
 	method beber(){
 		// Cuando bebe no se observa ningún cambio.
@@ -49,27 +58,51 @@ class Gallina {
 }
 
 class Bebedero {
+    method consumo() = 10 
     method esUtil(animal) = animal.tieneSed()
 
-    method darBeber(animal) = animal.beber()
+    method atender(animal){
+        animal.beber()
+    }
 }
 
 class Comedero {
     const property cantidad 
     const pesoSoportado 
+    method consumo() = 20*pesoSoportado 
 
     method esUtil(animal) = 
         animal.tieneHambre() && animal.peso() <= pesoSoportado
 
-    method darComer(animal){
+    method atender(animal){
     if(animal.peso() > pesoSoportado)
         self.error("Demasiado pesado")
     animal.comer(cantidad)
     }
 }
 
-object Colecciones{
-    var todosLosAnimales = []
+class Vacunatorio {
+    method consumo() = if(dosis > 0) 50 else 0
+    var property dosis = 0 
+
+    method recargarDosis(cantidad) {
+      dosis += cantidad
+    }
+
+    method esUtil(animal) = animal.puedeVacunarse() && dosis > 0
+
+    method atender(animal){
+        animal.vacunas(animal.vacunas() + 1)
+        dosis -= 1
+    }
+}
+
+object colecciones{
+    const todosLosAnimales = [
+        new Cerdo(peso = 75),
+        new Vaca(peso = 250),
+        new Gallina()
+    ]
 
     method todosTienenHambre() = 
         todosLosAnimales.all({animal => animal.tieneHambre()})
