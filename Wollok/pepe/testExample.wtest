@@ -1,0 +1,22 @@
+import categoria.*
+import bonos.*
+import pepe.*
+
+describe "Testeo de Pepe" {
+
+  test "Test Sueldo" {
+    pepe.categoria(cadete)
+    pepe.bonoResultados(bonoFijo)
+    pepe.bonoPresentismo(bonoNormal) 
+    pepe.faltas(3)
+    assert.equals(20800, pepe.sueldo())
+  }
+
+    test "Test Sueldo2" {
+    pepe.categoria(gerente)
+    pepe.bonoResultados(bonoPorcentaje)
+    pepe.bonoPresentismo(bonoNulo) 
+    assert.equals(16500, pepe.sueldo())
+  }
+
+}

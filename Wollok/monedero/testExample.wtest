@@ -1,0 +1,33 @@
+import monedero.*
+
+describe "test de monedero" {
+
+	const monedero = new Monedero(saldo = 500)
+
+	test "estado inicial del monedero, tiene una determinada plata" {
+		assert.that(monedero.saldo() == 500)
+	}
+
+	test "cuando saco una cantidad posible de pesos, resta plata" {
+		monedero.retirar(15)
+		assert.equals(485, monedero.saldo())
+	}
+
+	test "cuando quiero sacar más plata de la que tengo tira error" {
+		assert.throwsExceptionWithMessage("Debe sacar menos de 500", { => monedero.retirar(1000)})
+	}
+
+	test "cuando quiero sacar un monto negativo tira error" {
+		assert.throwsExceptionWithMessage("La cantidad debe ser positiva", { => monedero.retirar(-20)})
+	}
+
+	test "cuando quiero sacar un valor alfabetico tira error" {
+		assert.throwsException({ => monedero.depositar("A")})
+	}
+
+	test "cuando quiero poner un monto negativo tira error" {
+		assert.throwsExceptionLike(new UserException(message = "La cantidad debe ser positiva"), {
+		=> monedero.depositar(-20)})
+	}
+
+}
